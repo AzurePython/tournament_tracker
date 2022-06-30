@@ -1,0 +1,82 @@
+def tournament_tracker():
+    import json
+    pdict = {}
+    print ('''Welcome to Tournaments R Us
+    ============================''')
+    pnum = int(input('Enter the number of participants: '))
+    for i in range (1, pnum+1):
+        pdict[i] = None
+    end =  False
+    while end == False:
+        print('''    Participant Menu
+        ===============
+        1. Sign Up
+        2. Cancel Sign Up
+        3. View Participants
+        4. Save Changes
+        5. Exit''')
+
+        mnum = int(input('Enter a number (1-5) to choose a menu item: '))
+    #Sign up
+        if mnum == 1:
+            while True:
+                print('Participant Sign Up')
+                print('====================')
+
+                username = input('Participant Name: ')
+                userslot = int(input(f'Desired starting slot 1 - {pnum}: '))
+                if pdict[userslot] == None:
+                    pdict[userslot] = username
+                    print('Success:')
+                    print(f'{username} is signed up in starting slot #{userslot}')
+                    break
+                else:
+                    print('Error:')
+                    print(f'Slot #{userslot} is filled. Please try again.')
+    #Cancellation    
+        if mnum == 2:
+            while True:
+                print('Participant Cancellation')
+                print('========================')
+
+                cancelusername = input('Participant Name: ')
+                canceluserslot = int(input(f'Starting slot 1 - {pnum}: '))
+                if pdict[canceluserslot] == cancelusername:
+                    pdict[canceluserslot] = None
+                    print('Success:')
+                    print(f'{username} has been cancelled from starting slot #{userslot}')
+                    break
+                else:
+                    print('Error:')
+                    print(f'{cancelusername} is not in that slot.')
+    #participant list    
+        if mnum == 3:
+            while True:
+                print('View Participants')
+                print('==================')
+
+                viewuserslot = int(input(f'Starting slot 1 - {pnum}: '))
+                if viewuserslot in range(1,pnum+1):
+                    for i in range (viewuserslot -5, viewuserslot +6):
+                        print(f'{i}: {pdict[i]}')
+                    break
+                else:
+                    print('Error:')
+                    print(f'{viewuserslot} is not a valid slot.')
+    #Save file
+        elif mnum == 4:
+            print('Save Changes')
+            print('=============')
+            usersave = input('Save your canges to CSV? [y/n]')
+            if usersave == 'y':
+                with open('tournament_tracker.csv', 'w') as file:
+                    file.write(json.dumps(pdict))
+                    print('Changes Saved in tournament_tracker csv file')
+    # exit function
+        elif mnum == 5:
+            print('Exit')
+            print('=====')
+            print('Any unsaved changes will be lost.')
+            userexit = input('Are you sure you want to exit? [y/n]')
+            if userexit == 'y':
+                end = True
